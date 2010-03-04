@@ -1,0 +1,16 @@
+
+<ul id="subpages">
+<% @pages.each do |p| %>
+<li class="child" id="pages_<%=p.id%>"><img class="context-menu-show" src="/images/admin/pen_img.png" onclick="menu_show(this, <%=p.id%>);" />
+<b>
+<% if p.children.size > 0 %>
+<%=link_to (p.title, "javascript:void(0);", :pid => p.id)%>
+<% else %>
+<%=link_to_remote(p.title, :id => p.id, :url => "/admin/items/list/#{p.id}", :class => "items")%>
+<% end %>
+</b>
+</li>
+<% end %>
+</ul>
+
+<%= sortable_element("subpages", :url => { :action => "sort" }) %>

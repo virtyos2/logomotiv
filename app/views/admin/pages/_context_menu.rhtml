@@ -1,0 +1,15 @@
+<div class="left">
+	<span class="close right"><a class="context-menu-hide" href="#" onclick="menu_hide();"><img src="/images/admin/close.png" /></a></span>
+<ul class="left">
+	<li class="edit"><a href="/admin/<%=@page.type.to_s.downcase%>s/<%= @page.id %>/edit/">Редактировать</a></li>
+	<li class="invisible"><a href="#invisible">Режим невидимости</a></li>
+	<% if @page.type.to_s == 'Page' && @page.children.count == 0 %>
+	<li class="add-item"><a href="/admin/items/new?page_id=<%=@page.id%>">Добавить товар</a></a></li>
+	<% else %>
+	
+	<% end %>
+	
+	<li class="delete"><%= link_to "Удалить", "/admin/#{@page.type.to_s.downcase}s/#{@page.id}", :method => :delete %></a></li>
+</ul>
+</div>
+

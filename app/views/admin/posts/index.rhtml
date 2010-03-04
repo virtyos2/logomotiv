@@ -1,0 +1,11 @@
+<% content_for :actions do %>
+  <%= link_to 'Создать новость', new_admin_post_path %>  
+<% end %>
+<div id="subnav">
+	<%= yield :actions %>
+</div>
+<div class="container">
+<% @posts.each do |post| %>
+  <li><%= post.title %> <%= link_to 'Редактировать', edit_admin_post_path(post) %> <%= link_to 'Удалить', admin_post_path(post), :method => :delete %>
+<% end %>
+</div>

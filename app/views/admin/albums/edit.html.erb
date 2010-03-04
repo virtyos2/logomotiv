@@ -1,0 +1,86 @@
+<div class="container">
+<% content_for :js do %>
+	<%= javascript_include_tag 'admin/swfupload' %>
+	<script type="text/javascript" src="/javascripts/admin/swfupload.queue.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/fileprogress.js"></script>
+	<script type="text/javascript" src="/javascripts/admin/handlers.js"></script>
+	
+	<script type="text/javascript">
+		var swfu;
+
+		// Dom Ready
+		window.onload = function() {
+					var settings = {
+						flash_url : "/flash/swfupload.swf",
+						flash9_url : "/flash/swfupload_fp9.swf",
+						upload_url : "<%= admin_album_photos_path %>",
+						post_params : {"album_id": "<%= @album.id %>"},
+						file_size_limit : "100 MB",
+						file_types : "*.jpg;*.png;*.gif;*.jpeg",
+						file_types_description : "All Image Files",
+						file_upload_limit : 100,
+						file_queue_limit : 0,
+						custom_settings : {
+							progressTarget : "fsUploadProgress",
+							cancelButtonId : "btnCancel"
+						},
+						debug: false,
+
+						// Button settings
+						button_width: 61,
+						button_height: 22,
+						button_placeholder_id: "spanButtonPlaceHolder",
+						button_image_url: "/images/admin/upload_button.png",
+
+						swfupload_preload_handler : preLoad,
+										swfupload_load_failed_handler : loadFailed,
+										file_dialog_start_handler : fileDialogStart,
+										file_queued_handler : fileQueued,
+										file_queue_error_handler : fileQueueError,
+										file_dialog_complete_handler : fileDialogComplete,
+										upload_start_handler : uploadStart,
+										upload_progress_handler : uploadProgress,
+										upload_error_handler : uploadError,
+										upload_success_handler : uploadSuccess,
+										upload_complete_handler : uploadComplete,
+
+					}
+				swfu = new SWFUpload(settings);
+					};
+				
+</script>
+<% end %>
+
+<h1>Редактирование альбома</h1>
+
+<% form_for(["admin", @album]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title, "Название" %><br />
+    <%= f.text_field :title %>
+  </p>
+
+
+		<div class="list-photo" id="images">
+			<% @album.album_photos.each do |@photo| %>
+    			<%= render :partial => "photo" %>
+			<% end %>
+		</div>
+		<div class="clear"></div>
+		
+		<span id="spanButtonPlaceHolder" class="upload_button">Выбрать файл</span>
+		
+			<div class="fieldset flash" id="fsUploadProgress"></div>
+			<span class="legend">Очередь загрузки</span>
+			<span id="btnCancel"></span>
+			<div id="fsUploadProgress"></div>
+
+  <p>
+    <%= f.submit 'Сохранить' %>
+  </p>
+<% end %>
+
+<%= link_to 'Просмотр', ["admin", @album] %> |
+<%= link_to 'Назад', admin_albums_path %>
+</div>

@@ -1,0 +1,1 @@
+/Users/andreika/logomotiv/public/javascripts/ckcustom.js

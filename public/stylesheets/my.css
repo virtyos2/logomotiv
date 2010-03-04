@@ -1,0 +1,108 @@
+body { margin: 28px 0px;}
+a { cursor: pointer; font-family:Verdana;}
+font, p { font-family:Verdana; font-size: 0.8em;}
+/** header **/
+ul.nav li {
+	margin-bottom: 5px;
+}
+a.nav:link {
+color:#717171;
+font-family:arial,Verdana,Helvetica,sans-serif;
+font-size:11px;
+font-variant:normal;
+font-weight:normal;
+letter-spacing:normal;
+line-height:17px;
+text-decoration:none;
+}
+a.nav:visited {
+color:#717171;
+font-weight:normal;
+}
+a.nav:hover {
+
+background-color:#E51F1F;
+color:#FFFFFF;
+font-weight:normal;
+letter-spacing:normal;
+}
+.nav {
+color:#000000;
+font-family:arial;
+font-size:0.8em;
+font-weight:bold;
+letter-spacing:normal;
+line-height:17px;
+text-decoration:none;
+}
+
+a.green_cloud {
+	background: url('/images/green_cloud.gif');
+	width: 75px;
+	height: 32px;
+	display: block;
+	text-align: center;
+	padding-top: 5px;
+	font-family: Georgia;
+}
+
+a.green_cloud span {
+	color: #fff;
+	text-decoration: underline;
+	font-style: italic;
+}
+
+a.green_cloud span:hover {
+	color: #ededed;
+}
+
+a.map {
+	color: #000;
+	text-decoration: underline;
+	font-size: 0.8em;
+	padding-bottom: 23px;
+	display: block;
+}
+
+p.phone {
+	font-family: Arial;
+	font-size: 1.5em;
+	color: #454545;
+	padding-bottom: 6px;
+}
+p.phone span.phone_code {
+	color: #969696;
+}
+
+.quest {
+color:#666666;
+font-family:Verdana,Arial,Helvetica,sans-serif;
+font-size:13px;
+line-height:21px;
+}
+.why {
+color:#000000;
+font-family:arial,Verdana,Helvetica,sans-serif;
+font-size:1em;
+line-height:24px;
+}
+p.title {
+	
+}
+#right_col {
+	color: #515151;
+}
+.people_group {
+	margin-top: 15px;
+}
+.container {
+	height: 100%;
+}
+#footer {
+vertical-align: bottom;
+color:#4F4F4F;
+font-family:Verdana,Arial,Helvetica,sans-serif;
+font-size:0.6em;
+height:100%;
+margin-left:30px;
+}

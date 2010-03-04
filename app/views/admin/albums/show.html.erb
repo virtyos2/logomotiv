@@ -1,0 +1,9 @@
+<div class="container">
+<h1><%=h @album.title %></h1>
+<% @album.album_photos.each do |@photo| %>
+<%= render :partial => "photo" %>
+<% end %>
+
+<%= link_to 'Редактировать', edit_admin_album_path(@album) %> |
+<%= link_to 'Назад', admin_albums_path %>
+</div>

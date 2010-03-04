@@ -1,0 +1,46 @@
+<% if params[:controller] == 'news' %>
+<ul class="links_tree">
+		<li><a href="/">Главная</a></li>
+		<% if @post %>
+		<li><a href="/news/">Новости</a></li>
+		<li><%= @post.title %></li>
+		<% else %>
+		<li>Новости</li>
+		<% end %>
+</ul>
+<% else %>
+<ul class="links_tree">
+		<li><a href="/">Главная</a></li>
+		<% if @page.parent %>
+		<li><a href="/<%= @page.parent.permalink %>"><%= @page.parent.title %></a></li>
+		<li><%= @page.title %></li>
+		<% else %>
+		<li><%= @page.title %></li>
+		<% end %>
+</ul>
+<% end %>
+<div class="left_menu_220">
+	<ul class="default_page_menu">
+	<% if @page.parent_id != nil
+	@p = @page.parent
+	else 
+		@p = @page
+	end	
+	%>
+	
+	<% Page.find(:all, :conditions => {:published => true, :parent_id => @p.id}, :order => "position ASC").each do |page| %>
+	    <% if page.permalink == params[:permalink] || page.permalink == params[:controller] || (params[:path] && params[:path].last == page.permalink) %>
+	    <li><p><%= page.title %></p></li>
+		<% else %>
+	    <li><% if page.permalink =='news' %><%= link_to page.title, '/'+page.permalink %><% else %><%= link_to page.title, '/'+page.full_permalink %><% end %></li>
+	    <% end %>
+	<% end %>
+	</ul>
+	<% if @page %>
+	<% for banner in @page.banners %>
+	<%= link_to image_tag(banner.image.url, :style => "padding-top: 50px; left: 40px; position: relative;"), banner.url %>
+	<% end %>
+	<% end %>
+</div>
+<div class="container_100p left_menu_220_margin">
+	<div class="default_page_head"><!--шапка с картинкой--></div>

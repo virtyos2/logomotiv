@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<%= stylesheet_link_tag "admin" %>
+<link rel="stylesheet" href="/stylesheets/blueprint/screen.css" type="text/css" media="screen, projection">
+<link rel="stylesheet" href="/stylesheets/blueprint/print.css" type="text/css" media="print">
+<title>logomotiv Navigator: BXOD</title>
+</head>
+<%= render :partial => "admin/shared/header" %>
+<%= render :partial => "shared/flashes" %>
+<div class="text">
+	Для того, чтобы подключится к системе редактирования сайтом вам необходимо авторизоваться.
+	Пожалуйста, заполните форму.
+</div>
+<div id="login">
+<% form_for admin_signin_path, :url => "/admin/signin" do |f| %>
+	<span>Логин</span><br/>
+	<input type="text" name="login" value="admin" /><br/>
+	<span>Пароль</span><br/>
+	<input type="password" name="password" value="admin" /><br/>
+	<input type="checkbox" name="remember_me" />запомнить меня<br/>
+	<input type="submit" class="button" value="Войти" />
+<% end %>
+</div>
+<div id="forget">
+<hr/>
+<a href="/forget">Забыли пароль?</a>
+</div>

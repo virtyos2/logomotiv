@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script src="http://www.google.com/jsapi?key=ABQIAAAA0br1MUc8DSpHSD1-XwntCBT2yXp_ZAY8_ufC3CFXhHIE1NvwkxTgyztTq6xWG5LmD1VPnOUP-W1qaw" type="text/javascript"></script>
+<script type="text/javascript">
+google.load("jquery", "1.4.1");
+google.load("jqueryui", "1.7.2");
+</script>
+<%= javascript_include_tag "ckeditor/ckeditor" %>
+<%= javascript_include_tag "admin/admin" %>
+
+<%= yield :js %>
+<%= stylesheet_link_tag 'reset.css' %>
+<%= stylesheet_link_tag 'admin.css' %>
+
+</head>
+<body>
+<div id="layout">
+<%= render :partial => "admin/shared/header" %>
+
+<div id="menu">
+	<h1>Logomotiv</h1>
+	<div class="navi">
+	<ul>
+		<li<%= ' class="current"' if params[:controller] == 'admin/pages' %>><a href="/admin/pages/">Страницы</a></li>
+		<li<%= ' class="current"' if params[:controller] == 'admin/posts' %>><a href="/admin/pages/">Новости</a></li>
+		<li<%= ' class="current"' if params[:controller] == 'admin/blocks' %>><a href="/admin/pages/">Блоки</a></li>
+		<li<%= ' class="current"' if params[:controller] == 'admin/users' %>><a href="/admin/pages/">Пользователи</a></li>
+    </ul>
+	</div>
+	<div class="arrow">
+		<a href="/">Посмотреть сайт</a>
+	</div>
+</div>
+
+
+<%= yield :layout %>
+
+</body>
+</html>

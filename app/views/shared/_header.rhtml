@@ -1,0 +1,57 @@
+<div class="head">
+<!--шапка с меню, логотипом, телефоном-->
+	<div class="bbc_logo_bg"></div>
+	<!--логотипы-->
+	<div class="yamaha_logo left"><% if params[:controller] != 'home' %><a href="/"><% end %><img src="/images/YAMAHA_Logo.png" /><% if params[:controller] != 'home' %></a><% end %></div>
+	<div class="head_row_1">
+		<% if params[:controller] != 'home' %><a href="/"><% end %><img class="left" src="/images/BBC_Logo_blue.png" /><% if params[:controller] != 'home' %></a><% end %>
+		<p class="head_text left">Официальный дилер YAMAHA</p>
+		<!--телефоны-->
+		<p class="phone">Тел.: <span class="phone_number">(812) 337-10-41</span></p>
+	</div>
+	
+	<!--главное меню-->
+	
+	<ul class="main_menu">
+	<% Page.find(:all, :conditions => {:parent_id => nil, :published => true}).each do |p| %>
+	
+	  <% if !@page || !@page.self_and_ancestors.include?(p) %>
+	  <li><a href="/<% if p.template == 'shop' %>store/<% else %><% end %><%=p.permalink%>"><%= p.title %></a>
+	  <% else %>
+	  <li><a class="current" href="/<% if p.template == 'shop' %>store/<% else %><% end %><%=p.permalink%>"><%= p.title %></a>
+	  <% end %>
+	  <% if p.children.first %>
+	    <% @lined = false %>
+     	<ul class="sub_main_menu">
+	    <% Page.find(:all, :conditions => {:parent_id => p.id, :published => true}, :order => "position ASC").each do |c| %>
+			<% if c.underlined && !@lined %>
+			<% @lined = true %>
+			<li><div class="sub_menu_line"></div></li>
+			<% end %>
+			<li><% if c.template != 'news' %>
+			<a href="/<% if c.template == 'shop' %>store/
+			<% else %>
+			<% end %>
+			<%=c.full_permalink%>/">
+			<%=c.title%>
+			</a>
+			<% else %>
+			<a href="/news/"><%=c.title%></a><% end %></li>
+		<% end %>
+		</ul>
+      </li>
+	  <% end %>
+		<!--<li><div class="sub_menu_line"></div></li>-->
+	<% end%>
+	
+	</ul>
+
+	
+	<!--почта и карта сайта-->
+    <div class="head_icon_buttons">
+		<a href="/about/contacts/" class="mail"></a>
+        <div class="vline"></div>
+        <a href="/sitemap/" class="sitemap"></a>
+    </div>
+<!--конец шапки-->
+</div>

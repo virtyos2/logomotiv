@@ -1,0 +1,51 @@
+<%= error_messages_for :page %>
+
+<% content_for :js do %>
+<%= javascript_include_tag :ckeditor %>
+<% end %>
+<div class="container">
+<fieldset>
+  <legend></legend>
+<% form_for ["admin", @page], :method => @method do |f| -%>
+  <%= f.hidden_field :position %>
+  <p>
+	<%= f.label :name, "Название *" %><br/>
+    <%= f.text_field :title %>
+  </p>
+  <p>
+	<%= f.label :title, "Заголовок" %><br/>
+    <%= f.text_field :title %>
+  </p>
+  <p>
+	<%= f.label :parent_id, "Родительская страница" %><br/>
+	<%= #tree_select(Page.find(:all, :conditions => "parent_id IS NULL OR parent_id=0"),
+	                  #      'page', 'parent_id', @page) 
+	                        %>
+	<%= f.select :parent_id, nested_set_options(Page, @page, include_blank = true) {|i| "#{'-' * i.level} #{i.title}" }, :include_blank => true %>
+
+  </p>
+  <p>
+	<%= f.label :permalink, "Путь (eng) *" %><br/>
+    <%= f.text_field :permalink %>
+  </p>
+  <p>
+	<%= f.label :template, "Шаблон" %><br/>
+	<%= f.select :template, options_for_select({"Стандартный" => "", "Новости" => "news", "Каталог" => "shop", "Аксессуары" => "equip"}, @page.template || params[:type]) %>	
+  </p>
+  <p>
+  <%= f.label :content, "Содержание" %><br/>
+  <%= ckeditor_textarea("page", "content", :width => '100%', :height => '300px') %>
+
+  </p>
+  <p>
+  <%= f.label :published, "Публиковать" %><br/>
+  <%= f.check_box :published %>
+
+  </p>
+  <p>
+    <div class="span-4"><%= f.submit "Сохранить" %></div>
+    <div class="span-8 last"><%= f.submit "Очистить" %></div>
+  </p>
+<% end -%>
+</fieldset>
+</div>

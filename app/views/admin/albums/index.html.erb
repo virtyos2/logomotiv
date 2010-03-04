@@ -1,0 +1,22 @@
+<div class="container">
+<h1>Альбомы</h1>
+
+<table>
+  <tr>
+    <th>Название</th>
+  </tr>
+
+<% @albums.each do |album| %>
+  <tr>
+    <td><%=h album.title %></td>
+    <td><%= link_to 'Просмотр', admin_album_path(album) %></td>
+    <td><%= link_to 'Редактировать', edit_admin_album_path(album) %></td>
+    <td><%= link_to 'Уничтожить', admin_album_path(album), :confirm => 'Вы уверены?', :method => :delete %></td>
+  </tr>
+<% end %>
+</table>
+
+<br />
+
+<%= link_to 'Новый альбом', new_admin_album_path %>
+</div>

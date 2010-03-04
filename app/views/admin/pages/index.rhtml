@@ -1,0 +1,88 @@
+<% 
+  
+  def tree_list(pages, model, name, level=0, init=true)
+      html = ""
+      # The "Root" option is added
+      # so the user can choose a parent_id of 0
+      if init
+          # Add "Root" to the options
+          html << "<ul id=\"#{model}_#{name}\">\n"
+          #html << "\t<li\n"
+      end
+
+      if pages.length > 0
+        level += 1 # keep position
+        pages.collect do |p|
+          html << "\t<li style=\"padding-left:#{level * 10}px\""
+          html << ">"
+		  html << p.title.to_s + " " + link_to('Редактировать', edit_admin_page_path(p)) + " " + link_to('Удалить', admin_page_path(p), :method => :delete)
+		  html << " " + link_to('Добавить товар', new_admin_item_path(:page_id => p)) + " " + link_to('Список товаров', admin_items_path(:page_id => p)) if (p.template == 'shop' || p.template == 'equip') && p.children.count == 0
+		  html << " " + link_to('Добавить новость', new_admin_post_path(:page_id => p)) + " " if p.template == 'news'
+		  html << "</li>\n"
+          html << tree_list(p.children, model, name, level, false)
+        end
+      end
+      html << "</ul>\n" if init
+      return html
+  end
+
+%>
+<div id="subnav">
+	<a href="/admin/posts/new">Добавить новость</a>
+	<a href="/admin/items/new?type=equip">Добавить акссесуар</a>
+</div>
+<div id="buttons">
+	<a href="/admin/pages/new" class="button">Новая страница</a>
+</div>
+<div class="context-menu hidden" id="context-menu">
+
+</div>
+<div class="command-center">
+	<div class="list">
+	<% Page.find(:all, :conditions => "parent_id IS NULL OR parent_id=0", :order => "id ASC").each do |p| %>
+	
+	<ul id="pages" class="pages">
+		<li>
+		    <b><%= link_to p.title, edit_admin_page_path(p) %></b></li>
+		</li>
+		<% if p.children.count > 0 %>
+		<% Page.find(:all, :conditions => {:parent_id => p.id}, :order => "position ASC").each do |child_p| %>
+		<% content_tag_for :li, child_p, :class => :child do %><img src="/images/admin/pen_img.png" class="context-menu-show" onclick="menu_show(this, <%=child_p.id%>);"> &nbsp;
+			<% if child_p.children.count > 0 %>
+			
+			<%= link_to (child_p.title, "javascript:void(0);", :pid => child_p.id) %>
+			<% else %>
+			<a href="<%= edit_admin_page_path(child_p) %>"><%= child_p.title %></a>
+			<% end %>
+		<% end %>
+		<% end %>
+		<% end %>
+	</ul>
+    <% end %>
+	</div>
+	<!--<div class="list" id="children">
+	</div>-->
+	<div id="items">
+	</div>
+	<div class="clear"></div>
+</div>
+<%= sortable_element(".pages", :url => { :action => "sort" }, :tree => true, :only => :child	) %>
+<script type="text/javascript">
+$(".list li.child a").live("click", function() {
+
+	var page_id = $(this).attr('pid');
+	if(page_id) {
+	var el = $(this).parents('div.list');
+	var index = $('.list').index(jQuery(el));
+	var position = $(this).offset();
+	
+	$(".list:gt("+index+")").remove();
+	$.get("/admin/pages/list_parent/"+page_id, function(result) {
+		if(result) {
+    	     el.after('<div class="list" style="top: '+(position.top-340)+'px;">'+result+'</div>');
+	    }
+	});
+    }
+	
+});
+</script>

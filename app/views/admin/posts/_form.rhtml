@@ -1,0 +1,37 @@
+<%= error_messages_for :post %>
+
+<% content_for :js do %>
+<%= javascript_include_tag :ckeditor %>
+<% end %>
+<div id="form" class="prepend-top">
+<fieldset>
+  <legend></legend>
+<% form_for ["admin", @post], :method => @method do |f| -%>
+  
+  <p>
+	<%= f.label :title, "Название" %><br/>
+    <%= f.text_field :title, :size => "255" %>
+  </p>
+  <p>
+	<%= f.label :page, "Страница" %><br/>
+	<%= collection_select(:post, :page_id, Page.find(:all, :conditions => "template = 'news' OR (template='equip' AND parent_id IS NULL)"), :id, :title)%>
+  <p>
+  <%= f.label :content, "Содержание" %><br/>
+  <%= ckeditor_textarea("post", "content", :width => '700px', :height => '300px') %>
+  </p>
+  <p>
+	<%= f.label :tag_list, "Теги" %><br/>
+    <%= f.text_field :tag_list %>
+  </p>
+  <p class="date">
+	<%= f.label :created_at, "Дата" %><br/>
+	<%= date_select("post", "created_at", :class => "date") %>
+	
+  </p>
+  <p class="buttons">
+    <div class="left"><%= f.submit "Сохранить" %></div>
+    <div class="left"><%= f.submit "Очистить" %></div>
+  </p>
+<% end -%>
+</fieldset>
+</div>

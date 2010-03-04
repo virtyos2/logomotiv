@@ -1,0 +1,17 @@
+<div class="container">
+<h1>Новый альбом</h1>
+
+<% form_for(["admin", @album]) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :title, "Название" %><br />
+    <%= f.text_field :title %>
+  </p>
+  <p>
+    <%= f.submit 'Создать' %>
+  </p>
+<% end %>
+
+<%= link_to 'Назад', admin_albums_path %>
+</div>

@@ -1,0 +1,4 @@
+<div>
+<%= image_tag @photo.image.url(:thumb) %>
+<%= link_to 'удалить', admin_album_photo_path(@photo), :method => :delete %><br />
+</div>

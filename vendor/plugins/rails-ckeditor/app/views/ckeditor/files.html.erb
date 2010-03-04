@@ -1,0 +1,132 @@
+<% 
+def attachment_path_with_session_information(kind)
+   session_key = ActionController::Base.session_options[:key]
+   
+   options = {}
+   controller = case kind
+     when :image then Ckeditor::PLUGIN_FILE_MANAGER_IMAGE_UPLOAD_URI
+     when :file  then Ckeditor::PLUGIN_FILE_MANAGER_UPLOAD_URI
+     else '/ckeditor/create'
+   end
+   
+   if controller.include?('?')
+     arr = controller.split('?')
+     options = Rack::Utils.parse_query(arr.last)
+     controller = arr.first
+   end
+   
+   options[:controller] = controller
+   options[:protocol] = "http://"
+   options[session_key] = cookies[session_key]
+   options[request_forgery_protection_token] = form_authenticity_token unless request_forgery_protection_token.nil?
+   
+   url_for(options)
+ end
+ 
+ def file_image_tag(filename, path)
+   extname = File.extname(filename)
+   
+   image = case extname.to_s
+     when '.swf' then '/javascripts/ckeditor/images/swf.gif'
+     when '.pdf' then '/javascripts/ckeditor/images/pdf.gif'
+     when '.doc', '.txt' then '/javascripts/ckeditor/images/doc.gif'
+     when '.mp3' then '/javascripts/ckeditor/images/mp3.gif'
+     when '.rar', '.zip', '.tg' then '/javascripts/ckeditor/images/rar.gif'
+     when '.xls' then '/javascripts/ckeditor/images/xls.gif'
+     else '/javascripts/ckeditor/images/ckfnothumb.gif'
+   end
+   
+   image_tag(image, :alt=>path, :title=>filename, :onerror=>"this.src='/javascripts/ckeditor/images/ckfnothumb.gif'", :class=>'image')
+ end
+%>
+<script type="text/javascript">	  
+  var upload_path = "<%= attachment_path_with_session_information(:file) %>";
+  
+  function setUrl(url) 
+  {  
+    CKEDITOR.tools.callFunction(CKEditorFuncNum, url);
+    window.close();
+  }
+  
+  function uploadButton(button)
+  {
+    var element = $('fj');
+    
+    if (element.style.display == '')
+    {
+      element.style.display = 'none';
+    }
+    else
+    {
+      element.style.display = '';
+    }
+  }
+  
+  window.onload = function()
+  {
+    init_swfupload();
+    var f = new FileThumb('qu');
+    var t = new ToolBar('nv');
+    
+    var b1 = new Button('Upload New File', 'Upload', 'add.gif');
+    var b2 = new Button('Refresh', 'Refresh', 'refresh.gif');
+    
+    b1.callback = uploadButton;
+    b2.callback = function(){ window.location.reload(); }
+    
+    t.buttons.push(b1);
+    t.buttons.push(b2);
+    
+    t.init();
+  }
+</script>
+
+<table width="100%" cellspacing="0" cellpadding="0">
+	<tbody>
+	<tr>
+		<td class="TB_ToolbarSet" id="nv"></td>
+	</tr>
+
+	<tr id="fj" style='display:none;'>
+		<td style="white-space: normal;" class="FCKUploadArea">
+			<div class="PopupTitle">
+				<span>Upload New Files</span>
+			</div>
+			<div id="cY">
+				<table cellspacing="0" cellpadding="0" style="padding: 10px;">
+					<tbody>
+					<tr>
+						<td>
+              <span id='spanButtonPlaceholder'></span>
+              <div id="divFileProgressContainer" style="clear:both;"></div>
+              
+							<%= render :partial=>"swfupload" %>
+						</td>
+					</tr>
+				  </tbody>
+			  </table>
+			  <div class="PopupButtons">
+				  <div style="width: 100%;">
+					  <table width="100%" cellspacing="0" cellpadding="0">
+						  <tbody><tr>
+							  <td width="100%"></td>
+							  <td nowrap="nowrap">
+								  <button onclick="uploadButton()" class="Button"><span ckf:lang="CancelBtn">Cancel</span></button>
+							  </td>
+						  </tr>
+					  </tbody></table>
+				  </div>
+			  </div>
+			</div>
+		</td>
+	</tr>
+
+	<tr>
+		<td style="height: 100%;" id="qu">
+		  <div style="overflow:auto; height:550px;" id='container'>
+			 <%= render :partial=>"file", :collection=>@files %>
+		  </div>
+		</td>
+	</tr>
+</tbody>
+</table>
